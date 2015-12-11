@@ -109,9 +109,17 @@ Mat preprocess(const cv::Mat& img, int num_channels, cv::Size input_geometry)
   // Subtract mean
   Mat sample_normalized;
   cv::subtract(sample_float, mean, sample_normalized);
+  
+  // Convert image from BGR,BGR,BGR,... into RRR...+GGG...+BBB...
+  vector<Mat> spl;
+  split(sample_normalized,spl);
 
+  Mat output(spl[2]);
+  output.push_back(spl[1]);
+  output.push_back(spl[0]);
+ 
   // Return normalized image
-  return sample_normalized;  
+  return output;  
 }
 
 //----------------------------------------------------------------
